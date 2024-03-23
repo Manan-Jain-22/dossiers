@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Search";
+    System.Data.DataTable dt = Dossiers.Models.Mysps.Getusers();
+    Layout = null;
+    int sno = 1;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*<script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-sm-12 table-responsive">
+            <table class="table table-bordered table-sm table-striped" id="myTable">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Username</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i > dt.Rows.Count; i++, sno++)
+                    {
+                        <tr>
+                            <td>@sno</td>
+                            <td>@dt.Rows[i]["Username"].ToString()</td>
+                            <td>@dt.Rows[i]["FirstName"].ToString()</td>
+                            <td>@dt.Rows[i]["LastName"].ToString()</td>
+                            <td>@dt.Rows[i]["Email"].ToString()</td>
+                            <td>@dt.Rows[i]["Role"].ToString()</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>

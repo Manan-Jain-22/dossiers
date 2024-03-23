@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*<script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        background: #E2E2E2;
+    }
+
+    body {
+        background: #E2E2E2;
+        margin: 0;
+        padding: 0;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .login-form-wrap {
+        background: radial-gradient(ellipse at center, rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+        border: 1px solid #2d416d;
+        box-shadow: 0 1px #5670A4 inset, 0 0 10px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        width: 480px; /* Slightly reduced width */
+        height: 440px; /* Slightly reduced height */
+        margin: 40px auto; /* Reduced margin */
+        padding: 50px 30px 0 30px; /* Reduced padding */
+        text-align: center;
+    }
+
+        .login-form-wrap h1 {
+            margin: 0 0 30px 0; /* Reduced margin */
+            padding: 0;
+            font-size: 32px; /* Reduced font size */
+            color: #fff;
+        }
+
+        .login-form-wrap h5 {
+            margin-top: 40px;
+        }
+
+            .login-form-wrap h5 > a {
+                font-size: 18px; /* Reduced font size */
+                color: #fff;
+                text-decoration: none;
+                font-weight: 400;
+            }
+
+    .login-form {
+        width: 100%;
+    }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"],
+        .login-form select[type = "Role"],
+        .login-form button[type="submit"] {
+            width: 100%;
+            font-size: 18px; /* Reduced font size */
+            padding: 12px 20px; /* Reduced padding */
+        }
+</style>
+
+
+
+
+
+
+
+@* <section class="login-form-wrap">
+        <h1>University Of Waterloo</h1>
+        <form class="login-form">
+            <label>
+                <input type="text" name="username" required placeholder="username">
+            </label>
+            <label>
+                <input type="password" name="password" required placeholder="Password">
+            </label>
+            <br />
+            <label>
+                <select type="Role" name="Role">
+                    <option value="student"> Student</option>
+                    <option value="teacher"> Teacher </option>
+                </select>
+
+                <br />
+            </label>
+            <form action="~/Home/Logins">
+                <button type="submit">Login</button>
+            </form>
+        </form>
+        <h5><a href="#">Forgot password</a></h5>
+    </section>*@
+<section class="login-form-wrap">
+    <h1>University Of Waterloo</h1>
+    @*<form class="login-form" action="~/Home/Logins" method="POST">
+            <label>
+                <input type="text" name="username" required placeholder="Username">
+            </label>
+            <label>
+                <input type="password" name="password" required placeholder="Password">
+            </label>
+            <br>
+            <label>
+                <select name="Role" id="roleDropdown">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+
+            </label>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+
+            <h5><a href="#">Forgot password</a></h5>*@
+<div class="EnterUN">
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" />
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-info form-control mt-5" onclick="GenerateOTP()">Generate OTP</button>
+</div>
+
+<div class="EnterOTP" style="display:none;">
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="number" id="OTP" name="OTP" class="form-control" placeholder="Enter OTP" />
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-info form-control mt-5" onclick="Login()">Login</button>
+    <p><span style="cursor:pointer;" onclick="ResendOTP()">Resend OTP</span></p>
+    <p><span style="cursor:pointer;" onclick="Back()">Change Username</span></p>
+</div>
+    <input type="hidden" id="UserId" name="UserId" /> 
+</section>
+
+
+<script>
+    function GenerateOTP() {
+        let UName = $('#username').val().trim();
+        if (UName != '') {
+            $.get('/Home/GenerateOTP', { Username: UName }, function (data) {
+                if (data == '0')
+                    alert('Invalid Username');
+                else if (data == '-1')
+                    alert('Network error! Try again later.');
+                else {
+                    $('.EnterUN').hide();
+                    $('.EnterOTP').show();
+                    $('#UserId').val(data);
+                }
+            });
+        }
+        else {
+            alert('Enter Username');
+        }
+    }
+
+    function Back() {
+        $('.EnterOTP').hide();
+        $('.EnterUN').show();
+    }
+
+    function ResendOTP() {
+        let Uid = $('#UserId').val();
+        $.get('/Home/ResendOTP', { UId: Uid }, function (data) {
+            if (data == "0")
+                alert('Error')
+            else
+                alert('OTP Sent');
+        });
+    }
+
+    function Login() {
+        let OTP = $('#OTP').val().trim();
+        if (OTP != '') {
+            let Uid = $('#UserId').val();
+            $.get('/Home/AuthOTP', { Uid: Uid, OTP: OTP }, function (data) {
+                if (data == '0')
+                    alert('Wrong OTP');
+                else if (data == "1")
+                    window.location = '/Uploads/Index';
+                else
+                    window.location = '/Users/Index';
+            });
+        }
+        else
+            alert('Enter OTP');
+    }
+</script>
+
+<style>
+    .mt-5{
+        margin-top:25px;
+    }
+</style>

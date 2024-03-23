@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*<script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    @if (!Dossiers.Models.Cookies.CheckTeacher)
+    {
+    <script>
+        window.location = "/Home/Index";
+    </script>
+    }
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+﻿@model Dossiers.Models.Uploads
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+
+    <h2>Uploads</h2>
+
+    <form method="post" action="/Uploads/Create" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+
+   
+       
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.files,"File Name" ,htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.files, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-offset-2 col-md-6">
+                @Html.LabelFor(model => model.myfile,"", htmlAttributes: new { @class = "control-label col-md-2 col-md-offset-2" })
+                <input type="file" id="myfile" name="myfile" required class="form-control" />
+                @Html.ValidationMessageFor(model => model.myfile, "", new { @class = "text-danger" })
+            </div>
+       
+
+
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Upload" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        
+        <br />
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+        </form>

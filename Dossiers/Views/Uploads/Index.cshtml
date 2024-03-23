@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Dossiers.Models.Uploads>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+
+<h2>@Dossiers.Models.Cookies.UserDetails.FirstName Index</h2>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.files)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.myfile)
+        </th>
+        @* <th>
+                @Html.DisplayNameFor(model => model.sid)
+            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.files)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.myfile)*@
+
+                @if (System.IO.Path.GetExtension(item.myfile).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    <img src="~/docs/pdffileimg.png" alt="PDF File" style="width: 100px; height: auto;">
+
+                }
+                else if (System.IO.Path.GetExtension(item.myfile).Equals(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                         System.IO.Path.GetExtension(item.myfile).Equals(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                         System.IO.Path.GetExtension(item.myfile).Equals(".png", StringComparison.OrdinalIgnoreCase) ||
+                         System.IO.Path.GetExtension(item.myfile).Equals(".gif", StringComparison.OrdinalIgnoreCase))
+                {
+                    <img src="@Url.Content("~/docs/" + item.myfile)" alt="Uploaded Image" style="width: 100px; height: auto;">
+
+
+                }
+                else if (System.IO.Path.GetExtension(item.myfile).Equals(".xlsx", StringComparison.OrdinalIgnoreCase) ||
+                         System.IO.Path.GetExtension(item.myfile).Equals(".xls", StringComparison.OrdinalIgnoreCase))
+                {
+                    <img src="~/docs/excelfile.png" alt="Excel File" style="width: 100px; height: auto;">
+
+                }
+                else
+                {
+                    <p>Other File Type</p>
+                }
+
+
+
+
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.sid)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.time)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "Uploads", new { id = item.id })">Edit--</a>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+<a href="@Url.Action("DeleteCookies" , "Home")">Logout</a>

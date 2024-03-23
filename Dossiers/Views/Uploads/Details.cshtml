@@ -1,0 +1,51 @@
+﻿@model Dossiers.Models.Uploads
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Uploads</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.files)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.files)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.myfile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.myfile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.time)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
